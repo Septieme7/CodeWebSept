@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- ========================================
+        META TAGS - Configuration de base
+    ======================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CodeWebSept - Ben Astier, Concepteur-développeur Web/Mobile. Maintenance, réparation et création de codes. Expert Windows, Android, Linux, Mac et réseaux.">
+    <meta name="keywords" content="développeur web, maintenance informatique, réparation PC, création site web, HTML, CSS, JavaScript, Android, Windows, Linux, réseau, FTTH">
+    <meta name="author" content="Ben Astier - CodeWebSept">
+    <meta name="robots" content="index, follow">
+    
+    <!-- ========================================
+        OPEN GRAPH - Partage réseaux sociaux
+    ======================================== -->
+    <meta property="og:title" content="CodeWebSept - Ben Astier | Développeur & Technicien Informatique">
+    <meta property="og:description" content="Concepteur-développeur Web/Mobile. Maintenance, réparation et création de codes.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://codewebsept.fr">
+    <meta property="og:image" content="assets/images/picSept1.png">
+    
+    <!-- ========================================
+        THEME & COULEURS
+    ======================================== -->
+    <meta name="theme-color" content="#1a0a0a">
+    <meta name="msapplication-TileColor" content="#1a0a0a">
+    
+    <!-- ========================================
+        FAVICONS & ICONES
+    ======================================== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icon/favicon-16x16.png">
+    <link rel="shortcut icon" href="assets/icon/favicon.ico">
+    <link rel="manifest" href="assets/manifest/site.webmanifest">
+    
+    <!-- ========================================
+        FEUILLE DE STYLE EXTERNE
+    ======================================== -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- ========================================
+        TITRE DE LA PAGE
+    ======================================== -->
+    <title>CodeWebSept Développeur & Technicien Informatique</title>
+</head>
+<body>
+    <!-- ========================================
+        CANVAS BACKGROUND - Effet géométrique animé
+    ======================================== -->
+    <canvas id="bgCanvas" aria-hidden="true"></canvas>
+    
+    <!-- ========================================
+        CURSEUR PERSONNALISE - Suit la souris
+    ======================================== -->
+    <div id="customCursor" aria-hidden="true">
+        <div class="cursor-dot"></div>
+        <div class="cursor-ring"></div>
+    </div>
+
+    <!-- ========================================
+        HEADER - En-tête avec navigation
+    ======================================== -->
+    <header id="mainHeader">
+        <!-- Logo et titre principal -->
+        <div class="header-brand">
+            <h1 class="glitch-text" data-text="CodeWebSept">CodeWebSept</h1>
+            <span class="tagline">By Seven</span>
+        </div>
+        
+        <!-- Navigation principale -->
+        <nav class="main-nav" aria-label="Navigation principale">
+            <ul>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#competences" class="nav-link">Compétences</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#hobby" class="nav-link">Hobby</a></li>
+            </ul>
+        </nav>
+        
+        <!-- Boutons utilitaires -->
+        <div class="header-controls">
+            <!-- Bouton thème sombre/clair -->
+            <button id="themeToggle" class="control-btn" aria-label="Changer le thème" title="Mode Sombre/Clair">
+                <span class="icon-sun">☀️</span>
+                <span class="icon-moon">🌙</span>
+            </button>
+            
+            <!-- Bouton plein écran -->
+            <button id="fullscreenToggle" class="control-btn" aria-label="Plein écran" title="Plein écran">
+                <span class="icon-expand">🖥️</span>
+            </button>
+        </div>
+        
+        <!-- Menu hamburger mobile -->
+        <button id="menuToggle" class="menu-hamburger" aria-label="Menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- ========================================
+        MAIN - Contenu principal
+    ======================================== -->
+    <main id="mainContent">
+        
+        <!-- ========================================
+            SECTION HERO - Présentation principale
+        ======================================== -->
+        <section id="hero" class="section-hero">
+            <div class="hero-content">
+                <h2 class="hero-title">
+                    <span class="name-highlight">Ben Astier</span>
+                </h2>
+                <p class="hero-subtitle cyber-text">Concepteur-Développeur Web/Mobile</p>
+                <p class="hero-description">
+                    Maintenances, réparations et créations de codes
+                </p>
+                
+                <!-- Technologies maîtrisées -->
+                <div class="tech-stack">
+                    <span class="tech-badge">HTML</span>
+                    <span class="tech-badge">CSS</span>
+                    <span class="tech-badge">JavaScript</span>
+                    <span class="tech-badge">Tailwind</span>
+                    <span class="tech-badge">GitHub</span>
+                    <span class="tech-badge">npm</span>
+                    <span class="tech-badge">VS Code</span>
+                    <span class="tech-badge">MarkDown</span>
+                    <span class="tech-badge">PhotoShop</span>
+                    <span class="tech-badge">PHP</span>
+                    <span class="tech-badge">MySQL</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================
+            SECTION CONTACT - Coordonnées
+        ======================================== -->
+        <section id="contact" class="section-contact">
+            <h2 class="section-title">Contact</h2>
+            
+            <div class="contact-cards">
+                <!-- Carte Email -->
+                <a href="mailto:codewebsept@gmail.com" class="contact-card email-card">
+                    <div class="card-icon">✉</div>
+                    <div class="card-content">
+                        <span class="card-label">Email</span>
+                        <span class="card-value">codewebsept@gmail.com</span>
+                    </div>
+                    <div class="card-glow"></div>
+                </a>
+                
+                <!-- Carte Téléphone / WhatsApp -->
+                <a href="https://wa.me/33617015765" target="_blank" rel="noopener noreferrer" class="contact-card phone-card">
+                    <div class="card-icon">📱</div>
+                    <div class="card-content">
+                        <span class="card-label">WhatsApp</span>
+                        <span class="card-value">06 17 01 57 65</span>
+                    </div>
+                    <div class="card-glow"></div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ========================================
+            SECTION COMPETENCES - Domaines d'expertise
+        ======================================== -->
+        <section id="competences" class="section-competences">
+            <h2 class="section-title">Compétences</h2>
+            
+            <div class="competences-grid">
+                <!-- Compétence Android -->
+                <article class="competence-card">
+                    <div class="card-header">
+                        <span class="card-icon">🤖</span>
+                        <h3>Android</h3>
+                    </div>
+                    <p>Root, réparations hardware, débloquages BootLoader, RAZ, Updates applications, ByPass...</p>
+                </article>
+                
+                <!-- Compétence Windows -->
+                <article class="competence-card">
+                    <div class="card-header">
+                        <span class="card-icon">🪟</span>
+                        <h3>Windows</h3>
+                    </div>
+                    <p>Maintenances, réparations, updates hardware, installations logiciels et matériels, Améliorations du système, ventes de licences, sur Ordinateurs portables et Fixes, Devis pour achats.</p>
+                </article>
+                
+                <!-- Compétence Macintosh -->
+                <article class="competence-card">
+                    <div class="card-header">
+                        <span class="card-icon">🍎</span>
+                        <h3>Macintosh</h3>
+                    </div>
+                    <p>Installation de l'OS "système d'exploitation" (selon matériels).</p>
+                </article>
+                
+                <!-- Compétence Linux -->
+                <article class="competence-card">
+                    <div class="card-header">
+                        <span class="card-icon">🐧</span>
+                        <h3>Linux</h3>
+                    </div>
+                    <p>Installations de l'OS "système d'exploitation" quasi toutes les versions dont KaliLinux (selon matériels).</p>
+                </article>
+                
+                <!-- Compétence Réseaux -->
+                <article class="competence-card">
+                    <div class="card-header">
+                        <span class="card-icon">🌐</span>
+                        <h3>LAN & WLAN</h3>
+                    </div>
+                    <p>Réglages routers/modems, Monitoring, N.A.S, installation matériels switch "multiplicateurs de port Ethernet" et câblages, baies de brassages, config sur certains servers.</p>
+                </article>
+                
+                <!-- Compétence FTTH -->
+                <article class="competence-card">
+                    <div class="card-header">
+                        <span class="card-icon">💡</span>
+                        <h3>FTTH - Fibre Optique</h3>
+                    </div>
+                    <p>Pose PTO, Tirage de ligne, Optimisation de l'atténuation du signal "vitesse".</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- ========================================
+            SECTION SERVICES - Prestations proposées
+        ======================================== -->
+        <section id="services" class="section-services">
+            <h2 class="section-title">Services</h2>
+            
+            <div class="services-list">
+                <div class="service-item">
+                    <span class="service-icon">💻</span>
+                    <span class="service-text">Développement Web & Mobile</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">🔧</span>
+                    <span class="service-text">Maintenance & Réparation PC</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">📱</span>
+                    <span class="service-text">Réparation Smartphones</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">🌐</span>
+                    <span class="service-text">Configuration Réseaux</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">💡</span>
+                    <span class="service-text">Installation Fibre Optique</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">🛡️</span>
+                    <span class="service-text">Sécurité Informatique</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================
+            SECTION HOBBY - Passions personnelles
+        ======================================== -->
+        <section id="hobby" class="section-hobby">
+            <h2 class="section-title">Hobby Personnel</h2>
+            <p class="hobby-disclaimer">* Tout en restant dans les clous légaux bien sûr...</p>
+            
+            <div class="hobby-content">
+                <!-- Bornes d'arcade -->
+                <article class="hobby-item">
+                    <h3>🕹️ Bornes d'Arcade</h3>
+                    <p>Créations de bornes d'arcades, leurs FrontEnds et émulateurs de jeux rétro "Batocera, EmulationStation, RetroArch, Recalbox, LaunchBox/BigBox, Pegasus..." Mame, ScummVM, PS3, Wii, Switch, Ps3, Xbox et 360 etc...</p>
+                </article>
+                
+                <!-- Hacks consoles -->
+                <article class="hobby-item">
+                    <h3>🎮 Exploits Consoles</h3>
+                    <p>Hacks "Exploits" sur consoles Ps2, Ps3, Ps4, Ps5 "selon version", créations de servers PSN Local ou distants pour logiciels, jeux et homebrews.</p>
+                </article>
+                
+                <!-- Monitoring réseaux -->
+                <article class="hobby-item">
+                    <h3>📡 Monitoring Réseaux</h3>
+                    <p>Monitoring réseaux LAN, WLAN "Hacks"... quelques créations de sites WEB.</p>
+                </article>
+                
+                <!-- Drones -->
+                <article class="hobby-item">
+                    <h3>🚁 Drones</h3>
+                    <p>Je fabriques aussi des drones en récupérant des pièces à droite et à gauche.</p>
+                </article>
+                
+                <!-- Électronique -->
+                <article class="hobby-item">
+                    <h3>🔌 Électronique</h3>
+                    <p>Conceptions électrotechniques et électroniques sur Raspberry "Arduino", en ce moment sur le flipper zero "amplification du signal et nombreuses autres utilités grâce au composant Arduino...j'adore les Tesla".</p>
+                </article>
+                
+                <!-- Crypto & Deep -->
+                <article class="hobby-item">
+                    <h3>🔐 Crypto & Exploration</h3>
+                    <p>Je touches aussi un peu à l'environnement de la cryptomonnaie "légèrement sans plus" création de Wallet, échanges, achats et pertes aussi ça va avec... Le Deep est mon espace de jeu surtout le côté Dark où se trouve les vraies réponses... "Tor et newsgroups"... voilà voilà... vous en savez un peu plus sur ma personne maintenant.</p>
+                </article>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================
+        BOUTON RETOUR EN HAUT
+    ======================================== -->
+    <button id="scrollToTop" class="scroll-top-btn" aria-label="Retour en haut" title="Retour en haut">
+        <span class="arrow-up">↑</span>
+    </button>
+
+    <!-- ========================================
+        FOOTER - Pied de page
+    ======================================== -->
+    <footer id="mainFooter">
+        <div class="footer-content">
+            <!-- Message tarification -->
+            <p class="pricing-notice">
+                💰 Pour connaître mes tarifs, n'hésitez pas à me contacter directement par email ou WhatsApp.
+            </p>
+            
+            <!-- Copyright -->
+            <p class="copyright">
+                © <span id="currentYear"></span> CodeWebSept - <strong>By Seven</strong> - Tous droits réservés
+            </p>
+        </div>
+    </footer>
+
+    <!-- ========================================
+        SCRIPT JAVASCRIPT EXTERNE
+    ======================================== -->
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

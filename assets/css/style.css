@@ -1,0 +1,1144 @@
+/* =============================================
+CODEWEBSEPT - STYLE CYBERPUNK
+Palette: Noir, Rouge, Orange, Jaune
+Auteur: Ben Astier - By Seven
+============================================= */
+
+/* =============================================
+VARIABLES CSS - Palette Cyberpunk
+============================================= */
+:root {
+    /* Couleurs principales Cyberpunk */
+    --cyber-black: #0a0a0a;
+    --cyber-dark: #1a0a0a;
+    --cyber-red: #ff0033;
+    --cyber-red-dark: #cc0029;
+    --cyber-orange: #ff6600;
+    --cyber-yellow: #ffcc00;
+    --cyber-yellow-bright: #ffff00;
+    
+    /* Dégradés */
+    --gradient-fire: linear-gradient(135deg, var(--cyber-red), var(--cyber-orange), var(--cyber-yellow));
+    --gradient-dark: linear-gradient(180deg, var(--cyber-black), var(--cyber-dark));
+    --gradient-glow: linear-gradient(90deg, var(--cyber-red), var(--cyber-orange));
+    
+    /* Texte */
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #888888;
+    
+    /* Ombres et effets */
+    --glow-red: 0 0 20px rgba(255, 0, 51, 0.5);
+    --glow-orange: 0 0 20px rgba(255, 102, 0, 0.5);
+    --glow-yellow: 0 0 20px rgba(255, 204, 0, 0.5);
+    
+    /* Dimensions */
+    --header-height: 70px;
+    --footer-height: 120px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.4s ease;
+    --transition-slow: 0.6s ease;
+    
+    /* Polices */
+    --font-main: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+    --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* Mode clair - Variables inversées */
+[data-theme="light"] {
+    --cyber-black: #f5f5f5;
+    --cyber-dark: #e0e0e0;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #888888;
+}
+
+/* Mode sombre - Texte vert Matrix */
+[data-theme="dark"] {
+    --text-primary: #00ff00;
+    --text-secondary: #00cc00;
+    --text-muted: #009900;
+}
+
+/* Par défaut (sans attribut) - Vert Matrix aussi */
+body:not([data-theme]) {
+    --text-primary: #00ff00;
+    --text-secondary: #00cc00;
+    --text-muted: #009900;
+}
+
+/* =============================================
+RESET & BASE
+============================================= */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Sélection de texte stylisée */
+::selection {
+    background: var(--cyber-red);
+    color: var(--text-primary);
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--cyber-black);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-fire);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cyber-red);
+}
+
+/* =============================================
+HTML & BODY
+============================================= */
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--cyber-black);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* Curseur par défaut masqué si custom cursor actif */
+    cursor: none;
+}
+
+/* Fallback curseur pour tactile */
+@media (hover: none) {
+    body {
+        cursor: auto;
+    }
+}
+
+/* =============================================
+CANVAS BACKGROUND - Fond animé
+============================================= */
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Le canvas est derrière tout le contenu */
+    pointer-events: none;
+}
+
+/* =============================================
+CURSEUR PERSONNALISE
+============================================= */
+#customCursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    /* Au-dessus de tout */
+    mix-blend-mode: difference;
+}
+
+/* Point central du curseur */
+.cursor-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--cyber-yellow);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+}
+
+/* Anneau autour du curseur */
+.cursor-ring {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--cyber-red);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease-out;
+    opacity: 0.7;
+}
+
+/* État hover sur éléments interactifs */
+.cursor-hover .cursor-dot {
+    transform: translate(-50%, -50%) scale(2);
+    background: var(--cyber-red);
+}
+
+.cursor-hover .cursor-ring {
+    transform: translate(-50%, -50%) scale(1.5);
+    border-color: var(--cyber-yellow);
+    opacity: 1;
+}
+
+/* Masquer sur mobile/tactile */
+@media (hover: none) {
+    #customCursor {
+        display: none;
+    }
+}
+
+/* =============================================
+HEADER - En-tête
+============================================= */
+#mainHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background: rgba(10, 10, 10, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--cyber-red);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    z-index: 1000;
+    /* Animation d'entrée */
+    animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Logo et titre */
+.header-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.header-brand h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: var(--gradient-fire);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Effet Glitch sur le titre */
+.glitch-text {
+    position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-fire);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.glitch-text::before {
+    animation: glitch-1 2s infinite linear alternate-reverse;
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+}
+
+.glitch-text::after {
+    animation: glitch-2 3s infinite linear alternate-reverse;
+    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+}
+
+@keyframes glitch-1 {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-2px); }
+    40% { transform: translateX(2px); }
+    60% { transform: translateX(-1px); }
+    80% { transform: translateX(1px); }
+}
+
+@keyframes glitch-2 {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(2px); }
+    40% { transform: translateX(-2px); }
+    60% { transform: translateX(1px); }
+    80% { transform: translateX(-1px); }
+}
+
+.tagline {
+    font-size: 0.75rem;
+    color: var(--cyber-orange);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* Navigation principale */
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: color var(--transition-fast);
+}
+
+/* Effet underline animé */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-fire);
+    transition: all var(--transition-medium);
+    transform: translateX(-50%);
+}
+
+.nav-link:hover {
+    color: var(--cyber-yellow);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Boutons de contrôle (thème, fullscreen) */
+.header-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.control-btn {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--cyber-red);
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.control-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-fire);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.control-btn:hover {
+    border-color: var(--cyber-yellow);
+    box-shadow: var(--glow-red);
+}
+
+.control-btn:hover::before {
+    opacity: 0.2;
+}
+
+/* Icônes thème */
+.icon-sun,
+.icon-moon {
+    position: relative;
+    z-index: 1;
+}
+
+/* Mode sombre (défaut) - Icône soleil visible, style Matrix */
+[data-theme="dark"] .icon-sun {
+    display: block;
+}
+
+[data-theme="dark"] .icon-moon {
+    display: none;
+}
+
+[data-theme="dark"] #themeToggle {
+    border-color: #00ff00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+[data-theme="dark"] #themeToggle:hover {
+    border-color: #00ff00;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+/* Mode clair - Icône lune visible */
+[data-theme="light"] .icon-sun {
+    display: none;
+}
+
+[data-theme="light"] .icon-moon {
+    display: block;
+}
+
+/* Par défaut (dark) quand pas d'attribut */
+body:not([data-theme]) .icon-moon {
+    display: none;
+}
+
+body:not([data-theme]) .icon-sun {
+    display: block;
+}
+
+body:not([data-theme]) #themeToggle {
+    border-color: #00ff00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+/* Menu hamburger mobile */
+.menu-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.menu-hamburger span {
+    width: 100%;
+    height: 3px;
+    background: var(--cyber-red);
+    border-radius: 2px;
+    transition: all var(--transition-fast);
+}
+
+.menu-hamburger[aria-expanded="true"] span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-hamburger[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-hamburger[aria-expanded="true"] span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* =============================================
+MAIN - Contenu principal
+============================================= */
+#mainContent {
+    padding-top: var(--header-height);
+    min-height: calc(100vh - var(--footer-height));
+}
+
+/* Sections générales */
+section {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Titres de sections */
+.section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    /* Toujours blanc dans les deux modes */
+    color: #ffffff !important;
+}
+
+.section-title::before {
+    content: '< ';
+    color: var(--cyber-red);
+}
+
+.section-title::after {
+    content: ' />';
+    color: var(--cyber-red);
+}
+
+/* =============================================
+SECTION HERO - Présentation principale
+============================================= */
+.section-hero {
+    min-height: calc(100vh - var(--header-height));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-content {
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.name-highlight {
+    background: var(--gradient-fire);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 5px var(--cyber-red));
+    }
+    50% {
+        filter: drop-shadow(0 0 20px var(--cyber-orange));
+    }
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: var(--cyber-orange);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-mono);
+}
+
+/* Effet texte cyberpunk */
+.cyber-text {
+    text-shadow: 
+        0 0 10px var(--cyber-red),
+        0 0 20px var(--cyber-orange),
+        0 0 30px var(--cyber-yellow);
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+/* Badges technologies */
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.tech-badge {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 0, 51, 0.1);
+    border: 1px solid var(--cyber-red);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    color: var(--cyber-yellow);
+    transition: all var(--transition-fast);
+}
+
+.tech-badge:hover {
+    background: rgba(255, 0, 51, 0.3);
+    box-shadow: var(--glow-red);
+    transform: translateY(-2px);
+}
+
+/* =============================================
+SECTION CONTACT - Cartes de contact
+============================================= */
+.section-contact {
+    background: rgba(26, 10, 10, 0.5);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 0, 51, 0.3);
+}
+
+.contact-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Carte de contact générique */
+.contact-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem 2rem;
+    background: var(--cyber-dark);
+    border-radius: 12px;
+    text-decoration: none;
+    /* Texte toujours blanc dans les deux modes */
+    color: #ffffff !important;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-medium);
+    border: 1px solid transparent;
+}
+
+/* Effet de glow en fond - Toujours même style */
+.card-glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--transition-medium);
+}
+
+/* Email - Dégradé rouge vers orange - Fixe dans les deux modes */
+.email-card .card-glow {
+    background: linear-gradient(135deg, 
+        rgba(255, 0, 51, 0.3), 
+        rgba(255, 102, 0, 0.2)) !important;
+}
+
+/* Téléphone - Dégradé orange vers jaune - Fixe dans les deux modes */
+.phone-card .card-glow {
+    background: linear-gradient(135deg, 
+        rgba(255, 102, 0, 0.3), 
+        rgba(255, 204, 0, 0.2)) !important;
+}
+
+/* Forcer le fond sombre pour les cartes contact dans les deux modes */
+.email-card,
+.phone-card {
+    background: #1a0a0a !important;
+}
+
+.contact-card:hover {
+    border-color: var(--cyber-red);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--glow-red);
+}
+
+.contact-card:hover .card-glow {
+    opacity: 1;
+}
+
+/* Icône de la carte */
+.card-icon {
+    font-size: 2.5rem;
+    position: relative;
+    z-index: 1;
+    /* Animation de rebond */
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Contenu de la carte */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+.card-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--cyber-orange);
+    margin-bottom: 0.25rem;
+}
+
+.card-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* =============================================
+SECTION COMPETENCES - Grille de cartes
+============================================= */
+.competences-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.competence-card {
+    background: rgba(26, 10, 10, 0.8);
+    border: 1px solid rgba(255, 0, 51, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ligne de décoration en haut */
+.competence-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-fire);
+    transform: scaleX(0);
+    transition: transform var(--transition-medium);
+}
+
+.competence-card:hover {
+    border-color: var(--cyber-orange);
+    transform: translateY(-5px);
+    box-shadow: var(--glow-orange);
+}
+
+.competence-card:hover::before {
+    transform: scaleX(1);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.competence-card .card-icon {
+    font-size: 2rem;
+    animation: none;
+}
+
+.competence-card h3 {
+    font-size: 1.3rem;
+    color: var(--cyber-yellow);
+}
+
+.competence-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* =============================================
+SECTION SERVICES - Liste de services
+============================================= */
+.section-services {
+    background: linear-gradient(180deg, 
+        transparent, 
+        rgba(255, 0, 51, 0.05), 
+        transparent);
+}
+
+.services-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.service-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: rgba(10, 10, 10, 0.8);
+    border-left: 3px solid var(--cyber-red);
+    transition: all var(--transition-fast);
+}
+
+.service-item:hover {
+    background: rgba(255, 0, 51, 0.1);
+    border-left-color: var(--cyber-yellow);
+    transform: translateX(10px);
+}
+
+.service-icon {
+    font-size: 1.5rem;
+}
+
+/* Texte des services - Blanc en mode clair, Vert en mode dark */
+.service-text {
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+/* Mode sombre - Service text en vert Matrix */
+[data-theme="dark"] .service-text {
+    color: #00ff00;
+}
+
+/* Par défaut (sans attribut = dark) - Vert Matrix */
+body:not([data-theme]) .service-text {
+    color: #00ff00;
+}
+
+/* Mode clair - Service text en blanc */
+[data-theme="light"] .service-text {
+    color: #ffffff;
+}
+
+/* Mode clair - Fond sombre pour les services pour que le blanc soit lisible */
+[data-theme="light"] .service-item {
+    background: rgba(10, 10, 10, 0.9);
+}
+
+/* =============================================
+SECTION HOBBY - Passions personnelles
+============================================= */
+.section-hobby {
+    background: rgba(26, 10, 10, 0.3);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 102, 0, 0.3);
+}
+
+.hobby-disclaimer {
+    text-align: center;
+    color: var(--cyber-orange);
+    font-style: italic;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.hobby-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.hobby-item {
+    padding: 1.5rem;
+    background: rgba(10, 10, 10, 0.6);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 204, 0, 0.2);
+    transition: all var(--transition-medium);
+}
+
+.hobby-item:hover {
+    border-color: var(--cyber-yellow);
+    box-shadow: var(--glow-yellow);
+}
+
+.hobby-item h3 {
+    font-size: 1.2rem;
+    color: var(--cyber-yellow);
+    margin-bottom: 0.75rem;
+}
+
+.hobby-item p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* =============================================
+BOUTON RETOUR EN HAUT
+============================================= */
+.scroll-top-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-fire);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all var(--transition-medium);
+    z-index: 999;
+    box-shadow: var(--glow-red);
+}
+
+.scroll-top-btn.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 0, 51, 0.8);
+}
+
+.arrow-up {
+    font-size: 1.5rem;
+    color: var(--cyber-black);
+    font-weight: bold;
+}
+
+/* =============================================
+FOOTER - Pied de page
+============================================= */
+#mainFooter {
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        rgba(26, 10, 10, 0.95) 20%);
+    /* Image de fond avec opacité */
+    position: relative;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 1px solid var(--cyber-red);
+}
+
+/* Image de fond du footer */
+#mainFooter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('../images/footsept1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+    z-index: 0;
+}
+
+.footer-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pricing-notice {
+    font-size: 1.1rem;
+    color: var(--cyber-orange);
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px dashed var(--cyber-yellow);
+    border-radius: 8px;
+    background: rgba(255, 102, 0, 0.1);
+}
+
+.copyright {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.copyright strong {
+    color: var(--cyber-red);
+}
+
+/* =============================================
+RESPONSIVE - Tablette
+============================================= */
+@media (max-width: 992px) {
+    .main-nav {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 10, 0.98);
+        padding: 2rem;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-medium);
+    }
+    
+    .main-nav.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    
+    .menu-hamburger {
+        display: flex;
+    }
+    
+    .header-controls {
+        margin-right: 1rem;
+    }
+}
+
+/* =============================================
+RESPONSIVE - Mobile
+============================================= */
+@media (max-width: 768px) {
+    :root {
+        --header-height: 60px;
+    }
+    
+    #mainHeader {
+        padding: 0 1rem;
+    }
+    
+    .header-brand h1 {
+        font-size: 1.4rem;
+    }
+    
+    .tagline {
+        font-size: 0.65rem;
+    }
+    
+    section {
+        padding: 3rem 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .contact-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-card {
+        padding: 1rem 1.5rem;
+    }
+    
+    .competences-grid,
+    .hobby-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .scroll-top-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* =============================================
+RESPONSIVE - Petit mobile
+============================================= */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .tech-badge {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
+    
+    .control-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+    
+    .pricing-notice {
+        font-size: 0.95rem;
+        padding: 0.75rem;
+    }
+}
+
+/* =============================================
+ANIMATIONS UTILITAIRES
+============================================= */
+/* Classe pour éléments qui apparaissent au scroll */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animation de pulsation pour éléments importants */
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* =============================================
+ACCESSIBILITÉ - Focus visible
+============================================= */
+*:focus-visible {
+    outline: 2px solid var(--cyber-yellow);
+    outline-offset: 2px;
+}
+
+/* =============================================
+PRÉFÉRENCE: Réduire les animations
+============================================= */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
