@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flyer CodeWebSept - Ben Astier</title>
+    <style>
+        /* =============================================
+        RESET ET BASE
+        ============================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* =============================================
+        PAGE FLYER - Format A5 (148mm x 210mm)
+        ============================================= */
+        @page {
+            size: A5 portrait;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: #1a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* =============================================
+        CONTENEUR DU FLYER
+        ============================================= */
+        .flyer {
+            width: 148mm;
+            min-height: 210mm;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a0505 50%, #0a0a0a 100%);
+            border: 3px solid #ff0033;
+            border-radius: 15px;
+            padding: 15mm;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 0 30px rgba(255, 0, 51, 0.5),
+                0 0 60px rgba(255, 102, 0, 0.3),
+                inset 0 0 50px rgba(255, 0, 51, 0.1);
+        }
+
+        /* Effet de lignes en arrière-plan */
+        .flyer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 0, 51, 0.03) 2px,
+                rgba(255, 0, 51, 0.03) 4px
+            );
+            pointer-events: none;
+        }
+
+        /* =============================================
+        HEADER DU FLYER
+        ============================================= */
+        .flyer-header {
+            text-align: center;
+            margin-bottom: 8mm;
+            position: relative;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #ff0033, #ff6600, #ffcc00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 0, 51, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px #ff0033); }
+            to { filter: drop-shadow(0 0 15px #ff6600); }
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            color: #ff6600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-top: 3mm;
+        }
+
+        /* =============================================
+        SECTION NOM
+        ============================================= */
+        .name-section {
+            text-align: center;
+            margin-bottom: 6mm;
+            padding: 4mm;
+            background: rgba(255, 0, 51, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 102, 0, 0.3);
+        }
+
+        .name {
+            font-size: 1.8rem;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .title {
+            font-size: 1rem;
+            color: #ffcc00;
+            margin-top: 2mm;
+        }
+
+        /* =============================================
+        LISTE DES SERVICES
+        ============================================= */
+        .services {
+            margin-bottom: 6mm;
+        }
+
+        .services-title {
+            font-size: 1.1rem;
+            color: #ff0033;
+            text-align: center;
+            margin-bottom: 4mm;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2mm;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 2mm;
+            padding: 2mm 3mm;
+            background: rgba(255, 102, 0, 0.1);
+            border-left: 2px solid #ff6600;
+            font-size: 0.75rem;
+            color: #cccccc;
+        }
+
+        .service-icon {
+            font-size: 1rem;
+        }
+
+        /* =============================================
+        QR CODE SECTION
+        ============================================= */
+        .qr-section {
+            text-align: center;
+            margin: 6mm 0;
+            padding: 5mm;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            border: 2px solid #ffcc00;
+        }
+
+        .qr-code {
+            width: 35mm;
+            height: 35mm;
+            margin: 0 auto 3mm;
+            /* Le QR code sera généré via API */
+            background: white;
+            padding: 2mm;
+            border-radius: 5px;
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .qr-text {
+            font-size: 0.8rem;
+            color: #1a0a0a;
+            font-weight: 600;
+        }
+
+        .qr-subtext {
+            font-size: 0.65rem;
+            color: #666;
+            margin-top: 1mm;
+        }
+
+        /* =============================================
+        CONTACT
+        ============================================= */
+        .contact-section {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 5mm;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1mm;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+        }
+
+        .contact-value {
+            font-size: 0.75rem;
+            color: #ffcc00;
+            font-weight: 600;
+        }
+
+        .contact-label {
+            font-size: 0.6rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        /* =============================================
+        FOOTER DU FLYER
+        ============================================= */
+        .flyer-footer {
+            text-align: center;
+            padding-top: 4mm;
+            border-top: 1px dashed #ff0033;
+        }
+
+        .pricing-text {
+            font-size: 0.85rem;
+            color: #ff6600;
+            font-style: italic;
+            margin-bottom: 2mm;
+        }
+
+        .copyright {
+            font-size: 0.6rem;
+            color: #666;
+        }
+
+        /* =============================================
+        COINS DÉCORATIFS
+        ============================================= */
+        .corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ff0033;
+        }
+
+        .corner-tl { top: 5mm; left: 5mm; border-right: none; border-bottom: none; }
+        .corner-tr { top: 5mm; right: 5mm; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: 5mm; left: 5mm; border-right: none; border-top: none; }
+        .corner-br { bottom: 5mm; right: 5mm; border-left: none; border-top: none; }
+
+        /* =============================================
+        BOUTON IMPRIMER (non imprimé)
+        ============================================= */
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ff0033, #ff6600);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 0, 51, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 0, 51, 0.7);
+        }
+
+        @media print {
+            .print-btn { display: none; }
+            body { background: white; padding: 0; }
+            .flyer { 
+                box-shadow: none; 
+                border-radius: 0;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Bouton d'impression -->
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimer le Flyer</button>
+
+    <!-- =============================================
+        FLYER PRINCIPAL
+    ============================================= -->
+    <div class="flyer">
+        <!-- Coins décoratifs -->
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+
+        <!-- =============================================
+            HEADER - Logo et tagline
+        ============================================= -->
+        <header class="flyer-header">
+            <div class="logo-text">CodeWebSept</div>
+            <div class="tagline">By Seven</div>
+        </header>
+
+        <!-- =============================================
+            SECTION NOM ET TITRE
+        ============================================= -->
+        <section class="name-section">
+            <div class="name">Ben Astier</div>
+            <div class="title">Concepteur-Développeur Web/Mobile</div>
+        </section>
+
+        <!-- =============================================
+            SERVICES PROPOSÉS
+        ============================================= -->
+        <section class="services">
+            <h2 class="services-title">🔧 Mes Services</h2>
+            <div class="services-grid">
+                <div class="service-item">
+                    <span class="service-icon">💻</span>
+                    <span>Développement Web</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">📱</span>
+                    <span>Réparation Android</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">🪟</span>
+                    <span>Maintenance Windows</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">🍎</span>
+                    <span>Installation macOS</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">🐧</span>
+                    <span>Installation Linux</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">🌐</span>
+                    <span>Config Réseaux</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">💡</span>
+                    <span>Fibre FTTH</span>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon">🛡️</span>
+                    <span>Sécurité Info</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+            QR CODE - Lien vers le site web
+        ============================================= -->
+        <section class="qr-section">
+            <div class="qr-code">
+                <!-- QR Code généré via API QR Server -->
+                <!-- Remplacez l'URL par votre vrai domaine -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://codewebsept.netlify.app/&bgcolor=ffffff&color=ff0033" 
+                    alt="QR Code vers le site CodeWebSept">
+            </div>
+            <div class="qr-text">📲 Scannez pour visiter mon site</div>
+            <div class="qr-subtext">https://codewebsept.netlify.app/</div>
+        </section>
+
+        <!-- =============================================
+            CONTACTS
+        ============================================= -->
+        <section class="contact-section">
+            <div class="contact-item">
+                <span class="contact-icon">✉️</span>
+                <span class="contact-value">codewebsept@gmail.com</span>
+                <span class="contact-label">Email</span>
+            </div>
+            <div class="contact-item">
+                <span class="contact-icon">📱</span>
+                <span class="contact-value">06 17 01 57 65</span>
+                <span class="contact-label">WhatsApp</span>
+            </div>
+        </section>
+
+        <!-- =============================================
+            FOOTER
+        ============================================= -->
+        <footer class="flyer-footer">
+            <p class="pricing-text">💰 Pour connaître mes tarifs, contactez-moi !</p>
+            <p class="copyright">© 2024 CodeWebSept - By Seven</p>
+        </footer>
+    </div>
+
+    <script>
+        /* =============================================
+        SCRIPT OPTIONNEL
+        Peut être utilisé pour des animations
+        ============================================= */
+        console.log('🔥 Flyer CodeWebSept prêt à imprimer !');
+    </script>
+</body>
+</html>
