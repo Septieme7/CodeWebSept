@@ -5,10 +5,10 @@ Auteur: Ben Astier - By Seven
 ============================================= */
 
 /* =============================================
-VARIABLES CSS - Palette Cyberpunk
+VARIABLES CSS - Palette Cyberpunk - CORRIGÉ
 ============================================= */
 :root {
-    /* Couleurs principales Cyberpunk */
+    /* Couleurs principales Cyberpunk - Mode sombre par défaut */
     --cyber-black: #0a0a0a;
     --cyber-dark: #1a0a0a;
     --cyber-red: #ff0033;
@@ -22,10 +22,10 @@ VARIABLES CSS - Palette Cyberpunk
     --gradient-dark: linear-gradient(180deg, var(--cyber-black), var(--cyber-dark));
     --gradient-glow: linear-gradient(90deg, var(--cyber-red), var(--cyber-orange));
     
-    /* Texte */
-    --text-primary: #ffffff;
-    --text-secondary: #cccccc;
-    --text-muted: #888888;
+    /* Texte - Mode sombre */
+    --text-primary: #00ff00;
+    --text-secondary: #00cc00;
+    --text-muted: #009900;
     
     /* Ombres et effets */
     --glow-red: 0 0 20px rgba(255, 0, 51, 0.5);
@@ -46,24 +46,54 @@ VARIABLES CSS - Palette Cyberpunk
     --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
-/* Mode clair - Variables inversées */
+/* =============================================
+MODE CLAIR - Variables corrigées pour lisibilité
+============================================= */
 [data-theme="light"] {
-    --cyber-black: #f5f5f5;
-    --cyber-dark: #e0e0e0;
+    --cyber-black: #f5f7fa;
+    --cyber-dark: #2c3e50;
+    --cyber-red: #c0392b;
+    --cyber-red-dark: #a93226;
+    --cyber-orange: #d35400;
+    --cyber-yellow: #f39c12;
+    --cyber-yellow-bright: #f1c40f;
+    
+    --gradient-fire: linear-gradient(135deg, #c0392b, #d35400, #f39c12);
+    --gradient-dark: linear-gradient(180deg, #2c3e50, #1e2b38);
+    --gradient-glow: linear-gradient(90deg, #c0392b, #d35400);
+    
     --text-primary: #ffffff;
-    --text-secondary: #cccccc;
-    --text-muted: #888888;
+    --text-secondary: #ecf0f1;
+    --text-muted: #bdc3c7;
+    
+    --glow-red: 0 0 20px rgba(192, 57, 43, 0.5);
+    --glow-orange: 0 0 20px rgba(211, 84, 0, 0.5);
+    --glow-yellow: 0 0 20px rgba(243, 156, 18, 0.5);
 }
 
-/* Mode sombre - Texte vert Matrix */
+/* =============================================
+MODE SOMBRE - Renforcé
+============================================= */
 [data-theme="dark"] {
+    --cyber-black: #0a0a0a;
+    --cyber-dark: #1a0a0a;
+    --cyber-red: #ff0033;
+    --cyber-orange: #ff6600;
+    --cyber-yellow: #ffcc00;
+    
+    --gradient-fire: linear-gradient(135deg, #ff0033, #ff6600, #ffcc00);
+    
     --text-primary: #00ff00;
     --text-secondary: #00cc00;
     --text-muted: #009900;
 }
 
-/* Par défaut (sans attribut) - Vert Matrix aussi */
+/* =============================================
+DÉFAUT - Mode sombre
+============================================= */
 body:not([data-theme]) {
+    --cyber-black: #0a0a0a;
+    --cyber-dark: #1a0a0a;
     --text-primary: #00ff00;
     --text-secondary: #00cc00;
     --text-muted: #009900;
@@ -80,13 +110,11 @@ RESET & BASE
     box-sizing: border-box;
 }
 
-/* Sélection de texte stylisée */
 ::selection {
     background: var(--cyber-red);
-    color: var(--text-primary);
+    color: #ffffff;
 }
 
-/* Scrollbar personnalisée */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -119,11 +147,9 @@ body {
     line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
-    /* Curseur par défaut masqué si custom cursor actif */
     cursor: none;
 }
 
-/* Fallback curseur pour tactile */
 @media (hover: none) {
     body {
         cursor: auto;
@@ -131,7 +157,7 @@ body {
 }
 
 /* =============================================
-CANVAS BACKGROUND - Fond animé
+CANVAS BACKGROUND
 ============================================= */
 #bgCanvas {
     position: fixed;
@@ -140,12 +166,11 @@ CANVAS BACKGROUND - Fond animé
     width: 100%;
     height: 100%;
     z-index: -1;
-    /* Le canvas est derrière tout le contenu */
     pointer-events: none;
 }
 
 /* =============================================
-CURSEUR PERSONNALISE (OPTIMISÉ)
+CURSEUR PERSONNALISE OPTIMISÉ
 ============================================= */
 #customCursor {
     position: fixed;
@@ -153,15 +178,12 @@ CURSEUR PERSONNALISE (OPTIMISÉ)
     left: 0;
     pointer-events: none;
     z-index: 10000;
-    /* Au-dessus de tout */
     mix-blend-mode: difference;
-    /* Optimisations de performance */
     will-change: transform;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
 }
 
-/* Point central du curseur */
 .cursor-dot {
     position: absolute;
     width: 8px;
@@ -170,12 +192,10 @@ CURSEUR PERSONNALISE (OPTIMISÉ)
     border-radius: 50%;
     transform: translate(-50%, -50%);
     transition: transform 0.08s ease;
-    /* Optimisations */
     will-change: transform;
     backface-visibility: hidden;
 }
 
-/* Anneau autour du curseur */
 .cursor-ring {
     position: absolute;
     width: 40px;
@@ -185,12 +205,10 @@ CURSEUR PERSONNALISE (OPTIMISÉ)
     transform: translate(-50%, -50%);
     transition: all 0.12s ease-out;
     opacity: 0.7;
-    /* Optimisations */
     will-change: transform;
     backface-visibility: hidden;
 }
 
-/* État hover sur éléments interactifs */
 .cursor-hover .cursor-dot {
     transform: translate(-50%, -50%) scale(2);
     background: var(--cyber-red);
@@ -202,7 +220,6 @@ CURSEUR PERSONNALISE (OPTIMISÉ)
     opacity: 1;
 }
 
-/* Masquer sur mobile/tactile */
 @media (hover: none) {
     #customCursor {
         display: none;
@@ -210,7 +227,7 @@ CURSEUR PERSONNALISE (OPTIMISÉ)
 }
 
 /* =============================================
-HEADER - En-tête
+HEADER
 ============================================= */
 #mainHeader {
     position: fixed;
@@ -227,7 +244,6 @@ HEADER - En-tête
     justify-content: space-between;
     padding: 0 2rem;
     z-index: 1000;
-    /* Animation d'entrée */
     animation: slideDown 0.6s ease-out;
 }
 
@@ -242,7 +258,6 @@ HEADER - En-tête
     }
 }
 
-/* Logo et titre */
 .header-brand {
     display: flex;
     flex-direction: column;
@@ -259,7 +274,6 @@ HEADER - En-tête
     -webkit-text-fill-color: transparent;
 }
 
-/* Effet Glitch sur le titre */
 .glitch-text {
     position: relative;
 }
@@ -311,7 +325,6 @@ HEADER - En-tête
     letter-spacing: 3px;
 }
 
-/* Navigation principale */
 .main-nav ul {
     display: flex;
     list-style: none;
@@ -329,7 +342,6 @@ HEADER - En-tête
     transition: color var(--transition-fast);
 }
 
-/* Effet underline animé */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -350,7 +362,6 @@ HEADER - En-tête
     width: 100%;
 }
 
-/* Boutons de contrôle (thème, fullscreen) */
 .header-controls {
     display: flex;
     gap: 1rem;
@@ -390,33 +401,22 @@ HEADER - En-tête
     opacity: 0.2;
 }
 
-/* Icônes thème */
 .icon-sun,
 .icon-moon {
     position: relative;
     z-index: 1;
 }
 
-/* Mode sombre (défaut) - Icône soleil visible, style Matrix */
-[data-theme="dark"] .icon-sun {
+[data-theme="dark"] .icon-sun,
+body:not([data-theme]) .icon-sun {
     display: block;
 }
 
-[data-theme="dark"] .icon-moon {
+[data-theme="dark"] .icon-moon,
+body:not([data-theme]) .icon-moon {
     display: none;
 }
 
-[data-theme="dark"] #themeToggle {
-    border-color: #00ff00;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-}
-
-[data-theme="dark"] #themeToggle:hover {
-    border-color: #00ff00;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-}
-
-/* Mode clair - Icône lune visible */
 [data-theme="light"] .icon-sun {
     display: none;
 }
@@ -425,21 +425,6 @@ HEADER - En-tête
     display: block;
 }
 
-/* Par défaut (dark) quand pas d'attribut */
-body:not([data-theme]) .icon-moon {
-    display: none;
-}
-
-body:not([data-theme]) .icon-sun {
-    display: block;
-}
-
-body:not([data-theme]) #themeToggle {
-    border-color: #00ff00;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-}
-
-/* Menu hamburger mobile */
 .menu-hamburger {
     display: none;
     flex-direction: column;
@@ -473,21 +458,19 @@ body:not([data-theme]) #themeToggle {
 }
 
 /* =============================================
-MAIN - Contenu principal
+MAIN
 ============================================= */
 #mainContent {
     padding-top: var(--header-height);
     min-height: calc(100vh - var(--footer-height));
 }
 
-/* Sections générales */
 section {
     padding: 4rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* Titres de sections */
 .section-title {
     font-size: 2.5rem;
     text-align: center;
@@ -495,7 +478,6 @@ section {
     position: relative;
     display: inline-block;
     width: 100%;
-    /* Toujours blanc dans les deux modes */
     color: #ffffff !important;
 }
 
@@ -510,7 +492,7 @@ section {
 }
 
 /* =============================================
-SECTION HERO - Présentation principale
+SECTION HERO
 ============================================= */
 .section-hero {
     min-height: calc(100vh - var(--header-height));
@@ -564,7 +546,6 @@ SECTION HERO - Présentation principale
     font-family: var(--font-mono);
 }
 
-/* Effet texte cyberpunk */
 .cyber-text {
     text-shadow: 
         0 0 10px var(--cyber-red),
@@ -578,7 +559,6 @@ SECTION HERO - Présentation principale
     margin-bottom: 2rem;
 }
 
-/* Badges technologies */
 .tech-stack {
     display: flex;
     flex-wrap: wrap;
@@ -606,7 +586,7 @@ SECTION HERO - Présentation principale
 }
 
 /* =============================================
-SECTION CONTACT - Cartes de contact
+SECTION CONTACT
 ============================================= */
 .section-contact {
     background: rgba(26, 10, 10, 0.5);
@@ -622,7 +602,6 @@ SECTION CONTACT - Cartes de contact
     margin: 0 auto;
 }
 
-/* Carte de contact générique */
 .contact-card {
     display: flex;
     align-items: center;
@@ -631,7 +610,6 @@ SECTION CONTACT - Cartes de contact
     background: var(--cyber-dark);
     border-radius: 12px;
     text-decoration: none;
-    /* Texte toujours blanc dans les deux modes */
     color: #ffffff !important;
     position: relative;
     overflow: hidden;
@@ -639,7 +617,6 @@ SECTION CONTACT - Cartes de contact
     border: 1px solid transparent;
 }
 
-/* Effet de glow en fond - Toujours même style */
 .card-glow {
     position: absolute;
     inset: 0;
@@ -647,21 +624,18 @@ SECTION CONTACT - Cartes de contact
     transition: opacity var(--transition-medium);
 }
 
-/* Email - Dégradé rouge vers orange - Fixe dans les deux modes */
 .email-card .card-glow {
     background: linear-gradient(135deg, 
         rgba(255, 0, 51, 0.3), 
         rgba(255, 102, 0, 0.2)) !important;
 }
 
-/* Téléphone - Dégradé orange vers jaune - Fixe dans les deux modes */
 .phone-card .card-glow {
     background: linear-gradient(135deg, 
         rgba(255, 102, 0, 0.3), 
         rgba(255, 204, 0, 0.2)) !important;
 }
 
-/* Forcer le fond sombre pour les cartes contact dans les deux modes */
 .email-card,
 .phone-card {
     background: #1a0a0a !important;
@@ -677,12 +651,10 @@ SECTION CONTACT - Cartes de contact
     opacity: 1;
 }
 
-/* Icône de la carte */
 .card-icon {
     font-size: 2.5rem;
     position: relative;
     z-index: 1;
-    /* Animation de rebond */
     animation: bounce 2s ease-in-out infinite;
 }
 
@@ -691,7 +663,6 @@ SECTION CONTACT - Cartes de contact
     50% { transform: translateY(-5px); }
 }
 
-/* Contenu de la carte */
 .card-content {
     display: flex;
     flex-direction: column;
@@ -713,7 +684,7 @@ SECTION CONTACT - Cartes de contact
 }
 
 /* =============================================
-SECTION COMPETENCES - Grille de cartes
+SECTION COMPETENCES
 ============================================= */
 .competences-grid {
     display: grid;
@@ -722,8 +693,8 @@ SECTION COMPETENCES - Grille de cartes
 }
 
 .competence-card {
-    background: rgba(26, 10, 10, 0.8);
-    border: 1px solid rgba(255, 0, 51, 0.3);
+    background: var(--cyber-dark);
+    border: 1px solid var(--cyber-red);
     border-radius: 12px;
     padding: 1.5rem;
     transition: all var(--transition-medium);
@@ -733,7 +704,6 @@ SECTION COMPETENCES - Grille de cartes
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Ligne de décoration en haut */
 .competence-card::before {
     content: '';
     position: absolute;
@@ -746,7 +716,6 @@ SECTION COMPETENCES - Grille de cartes
     transition: transform var(--transition-medium);
 }
 
-/* Icône loupe pour indiquer le zoom */
 .competence-card::after {
     content: '🔍';
     position: absolute;
@@ -776,7 +745,6 @@ SECTION COMPETENCES - Grille de cartes
     transform: translateY(0);
 }
 
-/* Effet de pulse sur le texte au hover */
 .competence-card:hover p {
     animation: textPulse 1.5s ease-in-out infinite;
 }
@@ -806,7 +774,7 @@ SECTION COMPETENCES - Grille de cartes
 }
 
 /* =============================================
-SECTION SERVICES - Liste de services
+SECTION SERVICES
 ============================================= */
 .section-services {
     background: linear-gradient(180deg, 
@@ -828,13 +796,13 @@ SECTION SERVICES - Liste de services
     align-items: center;
     gap: 1rem;
     padding: 1rem 1.5rem;
-    background: rgba(10, 10, 10, 0.8);
+    background: var(--cyber-dark);
     border-left: 3px solid var(--cyber-red);
     transition: all var(--transition-fast);
 }
 
 .service-item:hover {
-    background: rgba(255, 0, 51, 0.1);
+    background: rgba(255, 0, 51, 0.2);
     border-left-color: var(--cyber-yellow);
     transform: translateX(10px);
 }
@@ -843,34 +811,13 @@ SECTION SERVICES - Liste de services
     font-size: 1.5rem;
 }
 
-/* Texte des services - Blanc en mode clair, Vert en mode dark */
 .service-text {
     font-size: 1rem;
     color: var(--text-primary);
 }
 
-/* Mode sombre - Service text en vert Matrix */
-[data-theme="dark"] .service-text {
-    color: #00ff00;
-}
-
-/* Par défaut (sans attribut = dark) - Vert Matrix */
-body:not([data-theme]) .service-text {
-    color: #00ff00;
-}
-
-/* Mode clair - Service text en blanc */
-[data-theme="light"] .service-text {
-    color: #ffffff;
-}
-
-/* Mode clair - Fond sombre pour les services pour que le blanc soit lisible */
-[data-theme="light"] .service-item {
-    background: rgba(10, 10, 10, 0.9);
-}
-
 /* =============================================
-SECTION HOBBY - Passions personnelles
+SECTION HOBBY
 ============================================= */
 .section-hobby {
     background: rgba(26, 10, 10, 0.3);
@@ -894,7 +841,7 @@ SECTION HOBBY - Passions personnelles
 
 .hobby-item {
     padding: 1.5rem;
-    background: rgba(10, 10, 10, 0.6);
+    background: var(--cyber-dark);
     border-radius: 10px;
     border: 1px solid rgba(255, 204, 0, 0.2);
     transition: all var(--transition-medium);
@@ -904,7 +851,6 @@ SECTION HOBBY - Passions personnelles
     overflow: hidden;
 }
 
-/* Icône loupe pour indiquer le zoom */
 .hobby-item::after {
     content: '🔍';
     position: absolute;
@@ -930,7 +876,6 @@ SECTION HOBBY - Passions personnelles
     transform: translateY(0);
 }
 
-/* Effet de pulse sur le texte au hover */
 .hobby-item:hover p {
     animation: textPulse 1.5s ease-in-out infinite;
 }
@@ -948,7 +893,6 @@ SECTION HOBBY - Passions personnelles
     transition: all 0.3s ease;
 }
 
-/* Animation de pulse pour le texte */
 @keyframes textPulse {
     0%, 100% { 
         color: var(--text-secondary);
@@ -961,7 +905,7 @@ SECTION HOBBY - Passions personnelles
 }
 
 /* =============================================
-SECTION CREATIONS - Projets réalisés
+SECTION CREATIONS
 ============================================= */
 .section-creations {
     background: linear-gradient(180deg, 
@@ -996,7 +940,7 @@ SECTION CREATIONS - Projets réalisés
     align-items: center;
     text-align: center;
     padding: 1.5rem 1rem;
-    background: rgba(26, 10, 10, 0.8);
+    background: var(--cyber-dark);
     border: 1px solid rgba(255, 0, 51, 0.3);
     border-radius: 12px;
     text-decoration: none;
@@ -1060,7 +1004,7 @@ SECTION CREATIONS - Projets réalisés
 }
 
 /* =============================================
-ZOOM OVERLAY - Effet de zoom au centre
+ZOOM OVERLAY
 ============================================= */
 .zoom-overlay {
     position: fixed;
@@ -1068,7 +1012,7 @@ ZOOM OVERLAY - Effet de zoom au centre
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(10, 10, 10, 0.8);
+    background: rgba(10, 10, 10, 0.85);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 9999;
@@ -1127,7 +1071,6 @@ ZOOM OVERLAY - Effet de zoom au centre
     }
 }
 
-/* Style du contenu zoomé */
 .zoom-container .competence-card,
 .zoom-container .hobby-item {
     margin: 0;
@@ -1139,11 +1082,6 @@ ZOOM OVERLAY - Effet de zoom au centre
     background: transparent;
     padding: 0;
     cursor: default;
-}
-
-.zoom-container .competence-card {
-    display: block;
-    background: transparent;
 }
 
 .zoom-container .competence-card::before,
@@ -1182,7 +1120,6 @@ ZOOM OVERLAY - Effet de zoom au centre
     color: var(--text-primary);
 }
 
-/* Bouton fermeture */
 .zoom-close {
     position: absolute;
     top: 15px;
@@ -1208,7 +1145,6 @@ ZOOM OVERLAY - Effet de zoom au centre
     box-shadow: 0 0 30px rgba(255, 0, 51, 0.8);
 }
 
-/* Scrollbar personnalisée pour le container zoom */
 .zoom-container::-webkit-scrollbar {
     width: 6px;
 }
@@ -1265,20 +1201,18 @@ BOUTON RETOUR EN HAUT
 }
 
 /* =============================================
-FOOTER - Pied de page
+FOOTER
 ============================================= */
 #mainFooter {
     background: linear-gradient(180deg, 
         transparent 0%, 
         rgba(26, 10, 10, 0.95) 20%);
-    /* Image de fond avec opacité */
     position: relative;
     padding: 3rem 2rem;
     text-align: center;
     border-top: 1px solid var(--cyber-red);
 }
 
-/* Image de fond du footer */
 #mainFooter::before {
     content: '';
     position: absolute;
@@ -1318,7 +1252,92 @@ FOOTER - Pied de page
 }
 
 /* =============================================
-RESPONSIVE - Tablette
+CORRECTIONS SPÉCIFIQUES MODE CLAIR
+============================================= */
+[data-theme="light"] #mainHeader {
+    background: rgba(44, 62, 80, 0.95);
+}
+
+[data-theme="light"] .nav-link {
+    color: #ecf0f1;
+}
+
+[data-theme="light"] .nav-link:hover {
+    color: var(--cyber-yellow);
+}
+
+[data-theme="light"] .competence-card,
+[data-theme="light"] .hobby-item,
+[data-theme="light"] .creation-card,
+[data-theme="light"] .service-item {
+    background: #2c3e50 !important;
+    border-color: var(--cyber-red);
+}
+
+[data-theme="light"] .competence-card p,
+[data-theme="light"] .hobby-item p,
+[data-theme="light"] .creation-card p {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .service-text {
+    color: #ffffff !important;
+}
+
+/* ***** Color des connaissances HAUT de page ****** */
+[data-theme="light"] .tech-badge {
+    background: rgba(192, 57, 43, 0.2);
+    color: #eaff00;
+}
+
+[data-theme="light"] .section-contact {
+    background: rgba(44, 62, 80, 0.3);
+}
+
+[data-theme="light"] .email-card,
+[data-theme="light"] .phone-card {
+    background: #2c3e50 !important;
+}
+
+[data-theme="light"] .card-value {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .hero-description {
+    color: #ecf0f1;
+}
+
+[data-theme="light"] .zoom-container {
+    background: #2c3e50;
+}
+
+[data-theme="light"] .zoom-container p {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .copyright {
+    color: #bdc3c7;
+}
+
+/* =============================================
+CORRECTIONS SPÉCIFIQUES MODE SOMBRE
+============================================= */
+[data-theme="dark"] .competence-card p,
+[data-theme="dark"] .hobby-item p,
+[data-theme="dark"] .creation-card p {
+    color: #00ff00 !important;
+}
+
+[data-theme="dark"] .service-text {
+    color: #00ff00 !important;
+}
+
+[data-theme="dark"] .hero-description {
+    color: #00cc00;
+}
+
+/* =============================================
+RESPONSIVE
 ============================================= */
 @media (max-width: 992px) {
     .main-nav {
@@ -1355,9 +1374,6 @@ RESPONSIVE - Tablette
     }
 }
 
-/* =============================================
-RESPONSIVE - Mobile
-============================================= */
 @media (max-width: 768px) {
     :root {
         --header-height: 60px;
@@ -1427,9 +1443,6 @@ RESPONSIVE - Mobile
     }
 }
 
-/* =============================================
-RESPONSIVE - Petit mobile
-============================================= */
 @media (max-width: 480px) {
     .hero-title {
         font-size: 1.8rem;
@@ -1455,7 +1468,6 @@ RESPONSIVE - Petit mobile
 /* =============================================
 ANIMATIONS UTILITAIRES
 ============================================= */
-/* Classe pour éléments qui apparaissent au scroll */
 .fade-in-up {
     opacity: 0;
     transform: translateY(30px);
@@ -1467,7 +1479,6 @@ ANIMATIONS UTILITAIRES
     transform: translateY(0);
 }
 
-/* Animation de pulsation pour éléments importants */
 .pulse {
     animation: pulse 2s ease-in-out infinite;
 }
@@ -1482,7 +1493,7 @@ ANIMATIONS UTILITAIRES
 }
 
 /* =============================================
-ACCESSIBILITÉ - Focus visible
+ACCESSIBILITÉ
 ============================================= */
 *:focus-visible {
     outline: 2px solid var(--cyber-yellow);
@@ -1490,7 +1501,7 @@ ACCESSIBILITÉ - Focus visible
 }
 
 /* =============================================
-PRÉFÉRENCE: Réduire les animations
+RÉDUCTION DES ANIMATIONS
 ============================================= */
 @media (prefers-reduced-motion: reduce) {
     *,
