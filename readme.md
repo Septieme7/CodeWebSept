@@ -206,7 +206,7 @@ Le site s'adapte à toutes les tailles d'écran :
 
 ## 📄 Licence
 
-© 2024 **CodeWebSept** - **By Seven** - Tous droits réservés.
+© 2026 **CodeWebSept** - **By Seven** - Tous droits réservés.
 
 ---
 

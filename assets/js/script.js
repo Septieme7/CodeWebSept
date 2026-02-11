@@ -25,8 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('bgCanvas');
     const ctx = canvas.getContext('2d');
     const customCursor = document.getElementById('customCursor');
-    const cursorDot = customCursor.querySelector('.cursor-dot');
-    const cursorRing = customCursor.querySelector('.cursor-ring');
     
     // Boutons de contrôle
     const themeToggle = document.getElementById('themeToggle');
@@ -203,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     /* =============================================
-    CURSEUR PERSONNALISÉ
+    CURSEUR PERSONNALISÉ OPTIMISÉ
     Suit les mouvements de la souris avec
     un effet visuel cyberpunk
     ============================================= */
@@ -217,28 +215,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let targetY = 0;
     
     /**
-     * Met à jour la position cible du curseur
-     * quand la souris bouge
+     * Met à jour la position cible du curseur optimisée
      * @param {MouseEvent} e - Événement de souris
      */
     const updateCursorPosition = (e) => {
-        targetX = e.clientX;
-        targetY = e.clientY;
+        // Utilise requestAnimationFrame pour synchroniser avec l'affichage
+        requestAnimationFrame(() => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+        });
     };
     
     /**
-     * Animation du curseur avec effet de lissage
+     * Animation du curseur avec effet de lissage OPTIMISÉ
      * Utilise requestAnimationFrame pour fluidité
      */
     const animateCursor = () => {
-        // Lissage de la position (lerp - linear interpolation)
-        // 0.15 = vitesse de suivi (plus petit = plus lent)
-        cursorX += (targetX - cursorX) * 0.15;
-        cursorY += (targetY - cursorY) * 0.15;
+        // Lissage de la position optimisé (plus rapide)
+        // 0.2 au lieu de 0.15 = plus réactif mais garde un peu de lissage
+        cursorX += (targetX - cursorX) * 0.2;
+        cursorY += (targetY - cursorY) * 0.2;
         
-        // Applique la position au curseur custom
+        // Utilise transform3d pour hardware acceleration
         if (customCursor) {
-            customCursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+            customCursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
         }
         
         // Continue l'animation
@@ -250,27 +250,32 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Active le curseur custom uniquement sur desktop
     if (supportsHover && customCursor) {
-        // Écoute les mouvements de souris
-        document.addEventListener('mousemove', updateCursorPosition);
+        // Écoute les mouvements de souris AVEC throttling
+        document.addEventListener('mousemove', (e) => {
+            updateCursorPosition(e);
+        }, { passive: true }); // passive: true pour améliorer les performances
         
         // Lance l'animation du curseur
         animateCursor();
         
-        // Détecte le survol d'éléments interactifs
-        const interactiveElements = document.querySelectorAll(
-            'a, button, .contact-card, .competence-card, .tech-badge, .service-item, .hobby-item'
-        );
+        // Optimise la détection des éléments interactifs
+        const updateCursorHoverState = () => {
+            // Utilise requestAnimationFrame pour éviter les calculs inutiles
+            requestAnimationFrame(() => {
+                const hoveredElement = document.elementFromPoint(targetX, targetY);
+                
+                if (hoveredElement && 
+                    (hoveredElement.matches('a, button, .contact-card, .competence-card, .tech-badge, .service-item, .hobby-item, .creation-card') ||
+                     hoveredElement.closest('a, button, .contact-card, .competence-card, .tech-badge, .service-item, .hobby-item, .creation-card'))) {
+                    customCursor.classList.add('cursor-hover');
+                } else {
+                    customCursor.classList.remove('cursor-hover');
+                }
+            });
+        };
         
-        interactiveElements.forEach(el => {
-            // Ajoute la classe hover au survol
-            el.addEventListener('mouseenter', () => {
-                customCursor.classList.add('cursor-hover');
-            });
-            // Retire la classe quand on quitte
-            el.addEventListener('mouseleave', () => {
-                customCursor.classList.remove('cursor-hover');
-            });
-        });
+        // Écoute les mouvements pour détecter le hover
+        document.addEventListener('mousemove', updateCursorHoverState, { passive: true });
     } else {
         // Cache le curseur custom sur tactile
         if (customCursor) {
@@ -662,7 +667,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleScrollAnimations = () => {
         // Sélectionne tous les éléments à animer
         const elements = document.querySelectorAll(
-            '.competence-card, .contact-card, .service-item, .hobby-item'
+            '.competence-card, .contact-card, .service-item, .hobby-item, .creation-card'
         );
         
         elements.forEach(el => {
@@ -679,7 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Ajoute la classe initiale aux éléments
     const animatedElements = document.querySelectorAll(
-        '.competence-card, .contact-card, .service-item, .hobby-item'
+        '.competence-card, .contact-card, .service-item, .hobby-item, .creation-card'
     );
     animatedElements.forEach(el => el.classList.add('fade-in-up'));
     
@@ -718,7 +723,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ============================================= */
     
     const mainHeader = document.getElementById('mainHeader');
-    let lastScrollY = 0;
     
     /**
      * Gère l'apparence du header selon le scroll
@@ -734,8 +738,6 @@ document.addEventListener('DOMContentLoaded', () => {
             mainHeader.style.background = 'rgba(10, 10, 10, 0.9)';
             mainHeader.style.boxShadow = 'none';
         }
-        
-        lastScrollY = currentScrollY;
     };
     
     // Écoute le scroll pour le header
@@ -762,9 +764,137 @@ document.addEventListener('DOMContentLoaded', () => {
                     top: targetPosition,
                     behavior: 'smooth'
                 });
+                
+                // Ferme le menu mobile si ouvert
+                if (mainNav && mainNav.classList.contains('active')) {
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    mainNav.classList.remove('active');
+                }
             }
         });
     });
+    
+    /* =============================================
+    ZOOM EFFECT - Agrandissement des cartes
+    Sections Compétences et Hobby
+    ============================================= */
+    
+    // Création des éléments de zoom s'ils n'existent pas
+    if (!document.getElementById('zoomOverlay')) {
+        const zoomOverlay = document.createElement('div');
+        zoomOverlay.id = 'zoomOverlay';
+        zoomOverlay.className = 'zoom-overlay';
+        document.body.appendChild(zoomOverlay);
+    }
+    
+    if (!document.getElementById('zoomContainer')) {
+        const zoomContainer = document.createElement('div');
+        zoomContainer.id = 'zoomContainer';
+        zoomContainer.className = 'zoom-container';
+        
+        const zoomCloseBtn = document.createElement('button');
+        zoomCloseBtn.id = 'zoomCloseBtn';
+        zoomCloseBtn.className = 'zoom-close';
+        zoomCloseBtn.innerHTML = '✕';
+        
+        const zoomContent = document.createElement('div');
+        zoomContent.id = 'zoomContent';
+        
+        zoomContainer.appendChild(zoomCloseBtn);
+        zoomContainer.appendChild(zoomContent);
+        document.body.appendChild(zoomContainer);
+    }
+    
+    // Éléments du zoom
+    const zoomOverlay = document.getElementById('zoomOverlay');
+    const zoomContainer = document.getElementById('zoomContainer');
+    const zoomContent = document.getElementById('zoomContent');
+    const zoomCloseBtn = document.getElementById('zoomCloseBtn');
+    
+    /**
+     * Fonction pour ouvrir le zoom
+     * @param {HTMLElement} element - Élément à zoomer
+     */
+    const openZoom = (element) => {
+        // Clone l'élément pour éviter de modifier l'original
+        const clonedElement = element.cloneNode(true);
+        
+        // Supprime les classes d'animation et hover du clone
+        clonedElement.classList.remove('fade-in-up', 'visible');
+        clonedElement.style.animation = 'none';
+        clonedElement.style.cursor = 'default';
+        
+        // Supprime les pseudo-éléments et les icônes loupe
+        clonedElement.classList.add('zoomed');
+        
+        // Vide et remplit le contenu zoomé
+        zoomContent.innerHTML = '';
+        zoomContent.appendChild(clonedElement);
+        
+        // Active l'overlay et le container
+        zoomOverlay.classList.add('active');
+        zoomContainer.classList.add('active');
+        
+        // Empêche le scroll du body
+        document.body.style.overflow = 'hidden';
+    };
+    
+    /**
+     * Fonction pour fermer le zoom
+     */
+    const closeZoom = () => {
+        zoomOverlay.classList.remove('active');
+        zoomContainer.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // Petite animation de sortie
+        zoomContainer.style.animation = 'none';
+        setTimeout(() => {
+            zoomContainer.style.animation = '';
+        }, 10);
+    };
+    
+    // Ajoute l'événement de clic sur les cartes de compétences
+    const competenceCards = document.querySelectorAll('.competence-card');
+    competenceCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openZoom(card);
+        });
+    });
+    
+    // Ajoute l'événement de clic sur les items de hobby
+    const hobbyItems = document.querySelectorAll('.hobby-item');
+    hobbyItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openZoom(item);
+        });
+    });
+    
+    // Fermeture du zoom
+    if (zoomCloseBtn) {
+        zoomCloseBtn.addEventListener('click', closeZoom);
+    }
+    
+    // Fermeture en cliquant sur l'overlay
+    if (zoomOverlay) {
+        zoomOverlay.addEventListener('click', closeZoom);
+    }
+    
+    // Fermeture avec la touche Echap
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && zoomContainer && zoomContainer.classList.contains('active')) {
+            closeZoom();
+        }
+    });
+    
+    // Empêche la fermeture quand on clique dans le container
+    if (zoomContainer) {
+        zoomContainer.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
     
     /* =============================================
     MESSAGE DE BIENVENUE DANS LA CONSOLE
@@ -778,6 +908,9 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     console.log('%c📧 Contact: codewebsept@gmail.com', 
         'color: #ff6600; font-size: 12px;'
+    );
+    console.log('%c🔍 Astuce: Cliquez sur les cartes Compétences et Hobby pour les zoomer !', 
+        'color: #00ff00; font-size: 12px; font-style: italic;'
     );
     
 }); // Fin du DOMContentLoaded

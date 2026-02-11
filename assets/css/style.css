@@ -145,7 +145,7 @@ CANVAS BACKGROUND - Fond animé
 }
 
 /* =============================================
-CURSEUR PERSONNALISE
+CURSEUR PERSONNALISE (OPTIMISÉ)
 ============================================= */
 #customCursor {
     position: fixed;
@@ -155,6 +155,10 @@ CURSEUR PERSONNALISE
     z-index: 10000;
     /* Au-dessus de tout */
     mix-blend-mode: difference;
+    /* Optimisations de performance */
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
 }
 
 /* Point central du curseur */
@@ -165,7 +169,10 @@ CURSEUR PERSONNALISE
     background: var(--cyber-yellow);
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    transition: transform 0.1s ease;
+    transition: transform 0.08s ease;
+    /* Optimisations */
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 /* Anneau autour du curseur */
@@ -176,8 +183,11 @@ CURSEUR PERSONNALISE
     border: 2px solid var(--cyber-red);
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    transition: all 0.15s ease-out;
+    transition: all 0.12s ease-out;
     opacity: 0.7;
+    /* Optimisations */
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 /* État hover sur éléments interactifs */
@@ -719,6 +729,8 @@ SECTION COMPETENCES - Grille de cartes
     transition: all var(--transition-medium);
     position: relative;
     overflow: hidden;
+    cursor: zoom-in;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* Ligne de décoration en haut */
@@ -734,6 +746,21 @@ SECTION COMPETENCES - Grille de cartes
     transition: transform var(--transition-medium);
 }
 
+/* Icône loupe pour indiquer le zoom */
+.competence-card::after {
+    content: '🔍';
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 1.2rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    color: var(--cyber-yellow);
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    z-index: 10;
+}
+
 .competence-card:hover {
     border-color: var(--cyber-orange);
     transform: translateY(-5px);
@@ -742,6 +769,16 @@ SECTION COMPETENCES - Grille de cartes
 
 .competence-card:hover::before {
     transform: scaleX(1);
+}
+
+.competence-card:hover::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Effet de pulse sur le texte au hover */
+.competence-card:hover p {
+    animation: textPulse 1.5s ease-in-out infinite;
 }
 
 .card-header {
@@ -765,6 +802,7 @@ SECTION COMPETENCES - Grille de cartes
     color: var(--text-secondary);
     font-size: 0.95rem;
     line-height: 1.7;
+    transition: all 0.3s ease;
 }
 
 /* =============================================
@@ -860,11 +898,41 @@ SECTION HOBBY - Passions personnelles
     border-radius: 10px;
     border: 1px solid rgba(255, 204, 0, 0.2);
     transition: all var(--transition-medium);
+    cursor: zoom-in;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Icône loupe pour indiquer le zoom */
+.hobby-item::after {
+    content: '🔍';
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 1.2rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    color: var(--cyber-yellow);
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    z-index: 10;
 }
 
 .hobby-item:hover {
     border-color: var(--cyber-yellow);
     box-shadow: var(--glow-yellow);
+    transform: translateY(-5px);
+}
+
+.hobby-item:hover::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Effet de pulse sur le texte au hover */
+.hobby-item:hover p {
+    animation: textPulse 1.5s ease-in-out infinite;
 }
 
 .hobby-item h3 {
@@ -877,6 +945,282 @@ SECTION HOBBY - Passions personnelles
     color: var(--text-secondary);
     font-size: 0.9rem;
     line-height: 1.6;
+    transition: all 0.3s ease;
+}
+
+/* Animation de pulse pour le texte */
+@keyframes textPulse {
+    0%, 100% { 
+        color: var(--text-secondary);
+        text-shadow: none;
+    }
+    50% { 
+        color: var(--cyber-yellow);
+        text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
+    }
+}
+
+/* =============================================
+SECTION CREATIONS - Projets réalisés
+============================================= */
+.section-creations {
+    background: linear-gradient(180deg, 
+        transparent, 
+        rgba(255, 102, 0, 0.05), 
+        transparent);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 204, 0, 0.2);
+}
+
+.creations-intro {
+    text-align: center;
+    color: var(--cyber-orange);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.creations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.creation-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: rgba(26, 10, 10, 0.8);
+    border: 1px solid rgba(255, 0, 51, 0.3);
+    border-radius: 12px;
+    text-decoration: none;
+    color: #ffffff !important;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-medium);
+    min-height: 180px;
+}
+
+.creation-glow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, 
+        rgba(255, 0, 51, 0.1), 
+        rgba(255, 102, 0, 0.1),
+        rgba(255, 204, 0, 0.1));
+    opacity: 0;
+    transition: opacity var(--transition-medium);
+}
+
+.creation-card:hover {
+    border-color: var(--cyber-yellow);
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: var(--glow-yellow);
+}
+
+.creation-card:hover .creation-glow {
+    opacity: 1;
+}
+
+.creation-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.creation-content {
+    position: relative;
+    z-index: 1;
+}
+
+.creation-content h3 {
+    font-size: 1.2rem;
+    color: var(--cyber-yellow);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.creation-content p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* =============================================
+ZOOM OVERLAY - Effet de zoom au centre
+============================================= */
+.zoom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.zoom-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.zoom-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    background: var(--cyber-dark);
+    border: 2px solid var(--cyber-red);
+    border-radius: 20px;
+    padding: 2rem;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 50px rgba(255, 0, 51, 0.5);
+    overflow-y: auto;
+    pointer-events: none;
+}
+
+.zoom-container.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+    animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Style du contenu zoomé */
+.zoom-container .competence-card,
+.zoom-container .hobby-item {
+    margin: 0;
+    width: 100%;
+    height: auto;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: default;
+}
+
+.zoom-container .competence-card {
+    display: block;
+    background: transparent;
+}
+
+.zoom-container .competence-card::before,
+.zoom-container .competence-card::after,
+.zoom-container .hobby-item::after {
+    display: none;
+}
+
+.zoom-container .card-header {
+    margin-bottom: 1.5rem;
+}
+
+.zoom-container .card-header h3,
+.zoom-container .hobby-item h3 {
+    font-size: 2rem;
+    color: var(--cyber-yellow);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    animation: titleGlow 2s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 204, 0, 0.5); }
+    50% { text-shadow: 0 0 20px rgba(255, 204, 0, 0.8), 0 0 30px rgba(255, 102, 0, 0.5); }
+}
+
+.zoom-container .card-icon {
+    font-size: 3rem;
+    margin-right: 1rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.zoom-container p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+}
+
+/* Bouton fermeture */
+.zoom-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-fire);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10001;
+    box-shadow: 0 0 20px rgba(255, 0, 51, 0.5);
+}
+
+.zoom-close:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 0 30px rgba(255, 0, 51, 0.8);
+}
+
+/* Scrollbar personnalisée pour le container zoom */
+.zoom-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.zoom-container::-webkit-scrollbar-track {
+    background: rgba(255, 0, 51, 0.1);
+    border-radius: 3px;
+}
+
+.zoom-container::-webkit-scrollbar-thumb {
+    background: var(--gradient-fire);
+    border-radius: 3px;
 }
 
 /* =============================================
@@ -1056,7 +1400,8 @@ RESPONSIVE - Mobile
     }
     
     .competences-grid,
-    .hobby-content {
+    .hobby-content,
+    .creations-grid {
         grid-template-columns: 1fr;
     }
     
@@ -1065,6 +1410,20 @@ RESPONSIVE - Mobile
         right: 20px;
         width: 45px;
         height: 45px;
+    }
+    
+    .zoom-container {
+        width: 95%;
+        padding: 1.5rem;
+    }
+    
+    .zoom-container .card-header h3,
+    .zoom-container .hobby-item h3 {
+        font-size: 1.6rem;
+    }
+    
+    .zoom-container p {
+        font-size: 1rem;
     }
 }
 
